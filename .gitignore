@@ -1,0 +1,16 @@
+node_modules
+dist
+.output
+.vite
+
+# Sirlar shu yerda qoladi — repoga hech qachon tushmaydi.
+.env
+.env.*
+!.env.example
+
+*.local
+*.log
+.DS_Store
+.idea
+.vscode
+tsconfig.tsbuildinfo
