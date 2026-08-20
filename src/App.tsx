@@ -3,6 +3,8 @@ import {
   Banknote,
   Boxes,
   LayoutDashboard,
+  Eye,
+  EyeOff,
   Loader2,
   Megaphone,
   LogOut,
@@ -77,6 +79,9 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Typing a password issued by someone else, on a shop floor, from a slip of
+  // paper — being able to check what you typed saves a lot of failed attempts.
+  const [reveal, setReveal] = useState(false);
 
   const submit = async () => {
     const address = email.trim().toLowerCase();
@@ -121,17 +126,29 @@ function SignIn() {
             }}
             className="h-11 w-full rounded-xl border border-line bg-canvas px-4 text-sm outline-none focus:border-pink-vivid"
           />
-          <input
-            type="password"
-            value={password}
-            autoComplete="current-password"
-            placeholder="Parol"
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") void submit();
-            }}
-            className="h-11 w-full rounded-xl border border-line bg-canvas px-4 text-sm outline-none focus:border-pink-vivid"
-          />
+          <div className="relative">
+            <input
+              type={reveal ? "text" : "password"}
+              value={password}
+              autoComplete="current-password"
+              placeholder="Parol"
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") void submit();
+              }}
+              className="h-11 w-full rounded-xl border border-line bg-canvas pl-4 pr-12 text-sm outline-none focus:border-pink-vivid"
+            />
+            <button
+              type="button"
+              onClick={() => setReveal((shown) => !shown)}
+              aria-label={reveal ? "Parolni yashirish" : "Parolni ko'rsatish"}
+              aria-pressed={reveal}
+              title={reveal ? "Parolni yashirish" : "Parolni ko'rsatish"}
+              className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-xl text-muted transition-colors hover:text-rose-deep"
+            >
+              {reveal ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
 
         {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
